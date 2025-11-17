@@ -1,36 +1,42 @@
 name: CI
 
 on:
-    push:
-        branches:
-            - main
-            - develop
-            - 'feat-*'
-
-    pull_request:
-        branches:
-            - main
-            - develop
+  push:
+    branches:
+      - main
+      - develop
+      - 'feat-*'
+  pull_request:
+    branches:
+      - main
+      - develop
 
 jobs:
-    build_and_tests:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+  build-and-test:
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                 node-version: "22.1.0"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
-            - name: Install dependencies
-              run: |
-               if[ -f package.json ]; then npm ci; else echo "No pcakge.json"; fi
-            
-            - name: Run tests
-              run: |
-               if[ -f package.json]; then npm test || exit 1; else echo "No tests"; fi
+      - name: Install dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+          else
+            echo "No package.json"
+          fi
 
+      - name: Run tests
+        run: |
+          if [ -f package.json ]; then
+            npm test || exit 1
+          else
+            echo "No tests"
+          fi
 
